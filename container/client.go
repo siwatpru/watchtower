@@ -17,6 +17,7 @@ const (
 var username = os.Getenv("REPO_USER")
 var password = os.Getenv("REPO_PASS")
 var email = os.Getenv("REPO_EMAIL")
+var registryToken = os.Getenv("REPO_HOST")
 
 // A Filter is a prototype for a function that can be used to filter the
 // results from a call to the ListContainers() method on the Client.
@@ -120,9 +121,10 @@ func (client dockerClient) StartContainer(c Container) error {
 	var newContainerID string
 	if username != "" && password != "" && email != "" {
 		auth := dockerclient.AuthConfig{
-			Username: username,
-			Password: password,
-			Email:    email,
+			Username:      username,
+			Password:      password,
+			Email:         email,
+			RegistryToken: registryToken,
 		}
 		newContainerID, err = client.api.CreateContainer(config, name, &auth)
 	} else {
